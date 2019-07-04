@@ -4,20 +4,26 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     </head>
     <body>
-    <div>
-        <input name="firstname" id="firstname" type="text">
-        <input name="secondname" id="secondname" type="text">
-        <input  name="phone" id="phone" type="text">
-        <button onclick="send()" id="send">Save User!</button>
-        <button onclick="getUser()">Show User!</button>
-    </div>
-    <div>
-        <ul class="brd1">
+        <div>
+            <label for="firstname">Имя</label>
+            <input name="firstname" id="firstname" type="text">
 
-        </ul>
-    </div>
-    <div id="result_form" class="b-popup-content" align="center">
-    </div>
+            <label for="secondname">Фамилия</label>
+            <input name="secondname" id="secondname" type="text">
+
+            <label for="phone">Номер телефона</label>
+            <input  name="phone" id="phone" type="text">
+
+            <button onclick="send()" id="send">Save User!</button>
+            <button onclick="getUser()">Show User!</button>
+        </div>
+        <div>
+            <ul id="brd1">
+
+            </ul>
+        </div>
+        <div id="result_form" class="b-popup-content" align="center">
+        </div>
     </body>
 </html>
 
@@ -27,8 +33,7 @@
             "firstname": $('#firstname').val(),
             "secondname": $('#secondname').val(),
             "phone": $('#phone').val(),
-        }
-
+        };
 
         $.ajax({
             type: "POST",
@@ -39,27 +44,29 @@
             success: function(data) {
                 alert(data);
             },
-             error: function (jqXHR) {
-                if (jqXHR.status == 500) {
-                $( "#result_form" ).append("<p>The name already exists!</p>")
-                alert("The name already exists!")
-            } else {
-                $( "#result_form" ).append("<p>The user is created!</p>")
+            error: function (jqXHR) {
+                if (jqXHR.status === 500) {
+                    $( "#result_form" ).append("<p>The name already exists!</p>");
+                    alert("The name already exists!")
+                } else {
+                    $( "#result_form" ).append("<p>The user is created!</p>")
+                }
             }
-        }
-    });
-}
+        });
+    }
+
     function getUser() {
         $.get( "/get/data", function(data) {
+            $('#brd1').empty();
             jQuery.each(data, function( index, value ) {
-                $( ".brd1" ).append("<li class='Name' data-name='"+ value.Firstname +"'> Firstname: " + value.Firstname + " <br> Secondname: " + value.Secondname + "<br>Phone:" + value.Phone+"<br><button class='delete' data-name='"+ value.Firstname +"'> Удалить!</button>"+  "</li>");
+                $('#brd1').append("<li class='Name'> Firstname: " + value.Firstname + " <br> Secondname: " + value.Secondname + "<br>Phone:" + value.Phone+"<br><button class='delete' data-id='"+ value.ID +"'> Удалить!</button>"+  "</li>");
             });
         });
-    };
+    }
 
-   $('.brd1').on('click', '.delete', function(){
-        var data = $(this).attr("data-name");
-        console.log($(this).attr("data-name"))
+   $('#brd1').on('click', '.delete', function(){
+        var data = $(this).attr("data-id");
+        console.log($(this).attr("data-id"));
 
         $.ajax({
             url: '/delete/data',

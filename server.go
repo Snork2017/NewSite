@@ -1,83 +1,96 @@
 package main
 
 import (
-    "fmt"
-    "net/http"
-    "html/template"
-    "encoding/json"
+	"encoding/json"
+	"fmt"
+	"html/template"
+	"net/http"
 )
 
-
 type Data struct {
-    Firstname string
-    Secondname string
-    Phone string
-    Id int
+	ID         uint64
+	Firstname  string
+	Secondname string
+	Phone      string
 }
 
-var data []Data 
+var (
+	data  []Data
+	count uint64
+)
 
-func getHtml(w http.ResponseWriter, r *http.Request) {
-    if r.Method == "GET" {
-        tmpl := template.Must(template.ParseFiles("create.html"))
-        tmpl.Execute(w, nil)
-    }  
+func IndexPage(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		return
+	}
+
+	tmpl := template.Must(template.ParseFiles("create.html"))
+	if err := tmpl.Execute(w, nil); err != nil {
+		fmt.Println("main.go -> IndexPage() -> Execute(): ", err)
+	}
 }
+
 func saveUsers(w http.ResponseWriter, r *http.Request) {
-    var request Data
-    if r.Method == "POST" {
-        err := json.NewDecoder(r.Body).Decode(&request)
-        if err != nil {
-            fmt.Println("server.go -> json.NewDecoder(): ", err)
-            return
-        }
-        for k, _ := range data {
-            if data[k].Firstname == request.Firstname{          
-                fmt.Println("The name already exists!\n")    
-                w.WriteHeader(http.StatusInternalServerError)
-                w.Write([]byte("500 - Something bad happened!"))
-                return 
-            }
-        }
-        for k, _ := range data {
-            if data[k].Id == request.Id {
-                request.Id = request.Id + 1 //Присваивание Id каждому новому пользователю!
-            }
-        }
-        data = append(data, request)
-    }
+	if r.Method != http.MethodPost {
+		return
+	}
+
+	var request Data
+	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
+		fmt.Println("server.go -> json.NewDecoder(): ", err)
+		return
+	}
+
+	for k := range data {
+		if data[k].Firstname == request.Firstname {
+			fmt.Println("The name already exists!\n")
+			w.WriteHeader(http.StatusInternalServerError)
+
+			if _, err := w.Write([]byte("500 - Something bad happened!")); err != nil {
+				fmt.Println("main.go -> saveUsers() -> Write(): ", err)
+			}
+			return
+		}
+	}
+
+	count++
+	request.ID = count
+
+	data = append(data, request)
 }
-
-
 
 func getData(w http.ResponseWriter, r *http.Request) {
-    body, err := json.Marshal(data)
-    if err != nil {
-        fmt.Println("server.go -> getData() -> json.Marshal(): ", err)
-        return 
-    }
+	body, err := json.Marshal(data)
+	if err != nil {
+		fmt.Println("server.go -> getData() -> json.Marshal(): ", err)
+		return
+	}
 
-    w.Header().Set("Content-Type", "application/json")
-    w.Write(body)
+	w.Header().Set("Content-Type", "application/json")
+	if _, err := w.Write(body); err != nil {
+		fmt.Println("main.go -> getData() -> Write(): ", err)
+	}
 }
 
-
 func deleteData(w http.ResponseWriter, r *http.Request) {
-    //var request Data
-    //if r.Method == "DELETE" {
-        //for k, _ := range data {
-            //if request.Id == data[k].Id {
-                 //data = append(data[:request.Id], data[request.Id+1:]...)
-            //}    
-        //}
-    //}
+	//var request Data
+	//if r.Method == "DELETE" {
+	//for k, _ := range data {
+	//if request.Id == data[k].Id {
+	//data = append(data[:request.Id], data[request.Id+1:]...)
+	//}
+	//}
+	//}
 }
 
 func main() {
-    http.HandleFunc("/login", getHtml)
-    http.HandleFunc("/save", saveUsers)
-    http.HandleFunc("/get/data", getData)
-    http.HandleFunc("/delete/data", deleteData)
-    fmt.Println("Server is listening...")
-    http.ListenAndServe(":1010", nil)
+	http.HandleFunc("/login", IndexPage)
+	http.HandleFunc("/save", saveUsers)
+	http.HandleFunc("/get/data", getData)
+	http.HandleFunc("/delete/data", deleteData)
+
+	fmt.Println("Server is listening...")
+	if err := http.ListenAndServe(":8003", nil); err != nil {
+		fmt.Println("main.go -> main() -> ListenAndServe(): ", err)
+	}
 }
