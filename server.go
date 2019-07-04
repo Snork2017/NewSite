@@ -3,7 +3,9 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"gopkg.in/night-codes/types.v1"
 	"html/template"
+	"io/ioutil"
 	"net/http"
 )
 
@@ -72,15 +74,33 @@ func getData(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func init() {
+	data = []Data{
+		{ID: 1, Firstname: "Кантемир", Secondname: "Задорожный", Phone: "+380"},
+		{ID: 2, Firstname: "Анна", Secondname: "Задорожная", Phone: "+380"},
+		{ID: 3, Firstname: "Виктор", Secondname: "Кондратюк", Phone: "+380"},
+	}
+}
+
 func deleteData(w http.ResponseWriter, r *http.Request) {
-	//var request Data
-	//if r.Method == "DELETE" {
-	//for k, _ := range data {
-	//if request.Id == data[k].Id {
-	//data = append(data[:request.Id], data[request.Id+1:]...)
-	//}
-	//}
-	//}
+	if r.Method != http.MethodDelete {
+		return
+	}
+
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		fmt.Println("server.go -> deleteData() -> json.ReadAll(): ", err)
+		return
+	}
+
+	id := types.Uint64(string(body))
+	for k := range data {
+		if data[k].ID == id {
+			data[k] = data[len(data)-1]
+			data = data[:len(data)-1]
+			break
+		}
+	}
 }
 
 func main() {
