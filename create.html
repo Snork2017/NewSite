@@ -5,25 +5,32 @@
     </head> 
     <body>  
         <div>   
-            <label for="firstname">Имя</label>  
+            <label for="firstname">Firstname</label>  
             <input name="firstname" id="firstname" type="text"> 
 
-             <label for="secondname">Фамилия</label>    
+             <label for="secondname">Secondname</label>    
             <input name="secondname" id="secondname" type="text">   
 
-             <label for="phone">Номер телефона</label>  
+             <label for="phone">Phone</label>  
             <input  name="phone" id="phone" type="text">    
 
              <button onclick="send()" id="send">Save User!</button> 
             <button onclick="getUser()">Show User!</button> 
         </div>  
-        <div>   
-            <ul id="brd1">  
+    <table border="1px">
+        <thead>
+            <tr>
+                <td width ="86" bgcolor="gray" align="center">Firstname</td>
+                <td width ="86" bgcolor="gray" align="center">Secondname</td>
+                <td width ="86" bgcolor="gray" align="center">Phone</td>
+                <td width ="86" bgcolor="gray" align="center">Actions</td>
+            </tr>
+        </thead>
+        <tbody id= "brd1">
 
-             </ul>  
-        </div>  
-        <div id="result_form" class="b-popup-content" align="center">   
-        </div>  
+        </tbody>
+    </table>
+
     </body> 
 </html> 
 
@@ -57,7 +64,7 @@
         $.get( "/get/data", function(data) {    
             $('#brd1').empty(); 
             jQuery.each(data, function( index, value ) {    
-                $('#brd1').append("<li class='Name'> Firstname: " + value.Firstname + " <br> Secondname: " + value.Secondname + "<br>Phone:" + value.Phone+"<br><button class='delete' data-id='"+ value.ID +"'> Удалить!</button>"+  "</li>"); 
+                $('#brd1').append("<tr class='Name'> <td align = 'center'>  " + value.Firstname + "</td> <br> <td align = 'center'> " + value.Secondname + "</td><br><td align = 'center'>" + value.Phone+"</td><br><td align = 'center'><button class='delete' data-id='"+ value.ID +"' <td> Удалить!</button>"+  "</tr>"); 
             }); 
         }); 
     }   
