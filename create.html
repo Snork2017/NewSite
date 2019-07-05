@@ -1,22 +1,25 @@
 <!DOCTYPE html> 
 <html>  
     <head>  
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>    
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>   
+        <link rel="stylesheet" href="http://dimsemenov.com/plugins/magnific-popup/site-assets/all.min.css?v=0.9.9">
     </head> 
     <body>  
-        <div>   
-            <label for="firstname">Firstname</label>  
-            <input name="firstname" id="firstname" type="text"> 
+        <a href="#form" class="popup">+Add User</a>
+        <div class="hidden"> 
+            <div id="form">
+                <label for="firstname">Firstname</label>  
+                <input name="firstname" id="firstname" type="text"> 
 
-             <label for="secondname">Secondname</label>    
-            <input name="secondname" id="secondname" type="text">   
+                <label for="secondname">Secondname</label>    
+                <input name="secondname" id="secondname" type="text">   
 
-             <label for="phone">Phone</label>  
-            <input  name="phone" id="phone" type="text">    
-
-             <button onclick="send()" id="send">Save User!</button> 
-            <button onclick="getUser()">Show User!</button> 
+                <label for="phone">Phone</label>  
+                <input  name="phone" id="phone" type="text">  
+                <button onclick="send()" id="send">Save User!</button>    
+            </div> 
         </div>  
+        <button onclick="getUser()">Show User!</button>
     <table border="1px">
         <thead>
             <tr>
@@ -30,11 +33,14 @@
 
         </tbody>
     </table>
-
+    <script src="http://dimsemenov.com/plugins/magnific-popup/dist/jquery.magnific-popup.min.js?v=0.9.9"></script>
     </body> 
 </html> 
 
  <script>   
+    $(function() {
+        $('.popup').magnificPopup();
+    });
     function send() {   
         var data = {    
             "firstname": $('#firstname').val(), 
@@ -81,7 +87,10 @@
     }); 
 </script>   
 
- <style>    
+ <style>  
+    .hidden {
+        display: none;
+    }  
    .brd {   
     border: 4px double black;   
     background: #fc3;   

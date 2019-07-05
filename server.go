@@ -74,13 +74,13 @@ func getData(w http.ResponseWriter, r *http.Request) {
     }
 }
 
-func init() {
+/*func init() {
     data = []Data{
         {ID: 1, Firstname: "Кантемир", Secondname: "Задорожный", Phone: "+380"},
         {ID: 2, Firstname: "Анна", Secondname: "Задорожная", Phone: "+380"},
         {ID: 3, Firstname: "Виктор", Secondname: "Кондратюк", Phone: "+380"},
     }
-}
+}*/
 
 func deleteData(w http.ResponseWriter, r *http.Request) {
     if r.Method != http.MethodDelete {
@@ -110,7 +110,7 @@ func main() {
     http.HandleFunc("/delete/data", deleteData)
 
     fmt.Println("Server is listening...")
-    if err := http.ListenAndServe(":8003", nil); err != nil {
+    if err := http.ListenAndServe(":8005", nil); err != nil {
         fmt.Println("main.go -> main() -> ListenAndServe(): ", err)
     }
 }
