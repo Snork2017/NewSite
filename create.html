@@ -5,28 +5,36 @@
         <link rel="stylesheet" href="http://dimsemenov.com/plugins/magnific-popup/site-assets/all.min.css?v=0.9.9">
     </head> 
     <body>  
-        <a href="#form" class="popup">+Add User</a>
-        <div class="hidden"> 
-            <div id="form">
-                <label for="firstname">Firstname</label>  
-                <input name="firstname" id="firstname" type="text"> 
+<a class="popup-with-form" href="#test-form">Open form</a>
+<div id="test-form" class="white-popup-block mfp-hide">
+    <h1 align="center">Creating User</h1>
+    <fieldset style="border:0;">
 
-                <label for="secondname">Secondname</label>    
-                <input name="secondname" id="secondname" type="text">   
-
-                <label for="phone">Phone</label>  
-                <input  name="phone" id="phone" type="text">  
-                <button onclick="send()" id="send">Save User!</button>    
-            </div> 
-        </div>  
+        <ul>
+            <li>
+                <label for="firstname"><b>Firstname</b></label>  
+                <input name="firstname" id="firstname" type="text" class="margin1"> 
+            </li>
+            <li>
+                <label for="secondname"><b>Secondname</b></label>    
+                <input name="secondname" id="secondname" type="text"> 
+            </li>
+            <li>
+                <label for="phone"><b>Phone</b></label>  
+                <input  name="phone" id="phone" type="text" class="margin2">  
+            </li>
+                <button onclick="send()" id="send">Save User!</button>
+        </ul>
+    </fieldset>
+</div>  
         <button onclick="getUser()">Show User!</button>
     <table border="1px">
         <thead>
             <tr>
-                <td width ="86" bgcolor="gray" align="center">Firstname</td>
-                <td width ="86" bgcolor="gray" align="center">Secondname</td>
-                <td width ="86" bgcolor="gray" align="center">Phone</td>
-                <td width ="86" bgcolor="gray" align="center">Actions</td>
+                <td width ="86" bgcolor="lightcyan" align="center">Firstname</td>
+                <td width ="86" bgcolor="lightcyan" align="center">Secondname</td>
+                <td width ="86" bgcolor="lightcyan" align="center">Phone</td>
+                <td width ="86" bgcolor="lightcyan" align="center">Actions</td>
             </tr>
         </thead>
         <tbody id= "brd1">
@@ -38,9 +46,23 @@
 </html> 
 
  <script>   
-    $(function() {
-        $('.popup').magnificPopup();
+    //pop up
+    $(document).ready(function() {
+    $('.popup-with-form').magnificPopup({
+        type: 'inline',
+        preloader: false,
+        focus: '#firstname',
+        callbacks: {
+            beforeOpen: function() {
+                if($(window).width() < 700) {
+                    this.st.focus = false;
+                } else {
+                    this.st.focus = '#firstname';
+                }
+            }
+        }
     });
+});
     function send() {   
         var data = {    
             "firstname": $('#firstname').val(), 
@@ -87,35 +109,53 @@
     }); 
 </script>   
 
- <style>  
+ <style> 
+    .margin1 {
+        margin-left: 20px;
+    }
+
+    .margin2 {
+        margin-left: 44px;
+    }
+
+    .white-popup-block {
+        background: #6b2929;
+        padding: 20px 30px;
+        text-align: left;
+        max-width: 650px;
+        margin: 40px auto;
+        position: relative;
+    }
     .hidden {
         display: none;
     }  
-   .brd {   
-    border: 4px double black;   
-    background: #fc3;   
-    padding: 1px;   
-    margin-left: 50%;   
-    width: 100px;   
+    .brd {   
+        border: 4px double black;   
+        background: #fc3;   
+        padding: 1px;   
+        margin-left: 50%;   
+        width: 100px;   
    }    
     .brd1 { 
-    width: 200px;   
-    position: absolute; 
-    border-right: 600px;    
-    }   
-     {  
-     font-family: Areal;    
-     }  
-     .b-popup-content{  
-    margin-left: :200px auto 0px auto;  
-    position: absolute; 
-    top:100px;  
-    right: 500px;   
-    width:300px;    
-    height: 400px;  
-    padding:10px;   
-    background-color: #c5c5c5;  
-    border-radius:5px;  
-    box-shadow: 0px 0px 10px #000;  
+        width: 200px;   
+        position: absolute; 
+        border-right: 600px;    
+    } 
+
+    {  
+        font-family: Areal;    
+    }
+
+    .b-popup-content{  
+        margin-left: :200px auto 0px auto;  
+        position: absolute; 
+        top:100px;  
+        right: 500px;   
+        width:300px;    
+        height: 400px;  
+        padding:10px;   
+        background-color: #c5c5c5;  
+        border-radius:5px;  
+        box-shadow: 0px 0px 10px #000;  
     }   
   </style>
