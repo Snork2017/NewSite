@@ -110,7 +110,8 @@ func main() {
     http.HandleFunc("/delete/data", deleteData)
 
     fmt.Println("Server is listening...")
-    if err := http.ListenAndServe(":8005", nil); err != nil {
+    if err := http.ListenAndServe(":8001", nil); err != nil {
         fmt.Println("main.go -> main() -> ListenAndServe(): ", err)
     }
 }
+

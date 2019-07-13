@@ -10,7 +10,7 @@
     <h1 align="center">Creating User</h1>
     <fieldset style="border:0;">
 
-        <ul>
+        <ol>
             <li>
                 <label for="firstname"><b>Firstname</b></label>  
                 <input name="firstname" id="firstname" type="text" class="margin1"> 
@@ -23,8 +23,8 @@
                 <label for="phone"><b>Phone</b></label>  
                 <input  name="phone" id="phone" type="text" class="margin2">  
             </li>
-                <button onclick="send()" id="send">Save User!</button>
-        </ul>
+                <button onclick="send()" id="send" class="close" >Save User!</button>
+        </ol>
     </fieldset>
 </div>  
         <button onclick="getUser()">Show User!</button>
@@ -47,6 +47,12 @@
 
  <script>   
     //pop up
+    $(document).ready(function() {
+    $('.close').click(function() {
+        $.magnificPopup.close();
+    });
+});
+
     $(document).ready(function() {
     $('.popup-with-form').magnificPopup({
         type: 'inline',
@@ -92,13 +98,13 @@
         $.get( "/get/data", function(data) {    
             $('#brd1').empty(); 
             jQuery.each(data, function( index, value ) {    
-                $('#brd1').append("<tr class='Name'> <td align = 'center'>  " + value.Firstname + "</td> <br> <td align = 'center'> " + value.Secondname + "</td><br><td align = 'center'>" + value.Phone+"</td><br><td align = 'center'><button class='delete' data-id='"+ value.ID +"' <td> Удалить!</button>"+  "</tr>"); 
+                $('#d').append("<tr class='Name'> <td align = 'center'>  " + value.Firstname + "</td> <br> <td align = 'center'> " + value.Secondname + "</td><br><td align = 'center'>" + value.Phone+"</td><br><td align = 'center'><button class='delete' data-id='"+ value.ID +"' <td> Удалить!</button>"+  "</tr>"); 
             }); 
         }); 
     }   
     $('#brd1').on('click', '.delete', function(){   
         var data = $(this).attr("data-id"); 
-        console.log($(this).attr("data-id"));   
+        console.log($(this).attr("data-id")); 
          $.ajax({   
             url: '/delete/data',    
             type: 'DELETE', 
@@ -110,6 +116,10 @@
 </script>   
 
  <style> 
+    button.save-close {
+        overflow: visible;
+        -webkit-appearance: none;
+}
     .margin1 {
         margin-left: 20px;
     }
@@ -118,11 +128,15 @@
         margin-left: 44px;
     }
 
+    .pad1 {
+        padding-right: 5px;
+    }
+
     .white-popup-block {
-        background: #6b2929;
+        background: #84a4e0;
         padding: 20px 30px;
         text-align: left;
-        max-width: 650px;
+        max-width: 400px;
         margin: 40px auto;
         position: relative;
     }
