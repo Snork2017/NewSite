@@ -74,14 +74,6 @@ func getData(w http.ResponseWriter, r *http.Request) {
     }
 }
 
-/*func init() {
-    data = []Data{
-        {ID: 1, Firstname: "Кантемир", Secondname: "Задорожный", Phone: "+380"},
-        {ID: 2, Firstname: "Анна", Secondname: "Задорожная", Phone: "+380"},
-        {ID: 3, Firstname: "Виктор", Secondname: "Кондратюк", Phone: "+380"},
-    }
-}*/
-
 func deleteData(w http.ResponseWriter, r *http.Request) {
     if r.Method != http.MethodDelete {
         return
@@ -103,15 +95,29 @@ func deleteData(w http.ResponseWriter, r *http.Request) {
     }
 }
 
+func editData(w http.ResponseWriter, r *http.Request) {
+    var request Data
+    var ww = "Kant"
+    if r.Method == "EDIT" {
+            return
+        }
+    for k, _ := range data {
+        if data[k].ID == request.ID{
+            request.ID = ww
+            break
+        }
+    } 
+    data = append(data)
+}
+
 func main() {
     http.HandleFunc("/login", IndexPage)
     http.HandleFunc("/save", saveUsers)
     http.HandleFunc("/get/data", getData)
     http.HandleFunc("/delete/data", deleteData)
-
+    http.HandleFunc("/edit/data", editData)
     fmt.Println("Server is listening...")
-    if err := http.ListenAndServe(":8001", nil); err != nil {
+    if err := http.ListenAndServe(":8002", nil); err != nil {
         fmt.Println("main.go -> main() -> ListenAndServe(): ", err)
     }
 }
-
