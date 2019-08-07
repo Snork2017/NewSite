@@ -96,14 +96,21 @@ func deleteData(w http.ResponseWriter, r *http.Request) {
 }
 
 func editData(w http.ResponseWriter, r *http.Request) {
-    var request Data
     var ww = "Kant"
-    if r.Method == "EDIT" {
-            return
-        }
+    if r.Method != http.MethodPut {
+        return
+    }
+
+     body, err := ioutil.ReadAll(r.Body)
+    if err != nil {
+        fmt.Println("server.go -> editData() -> json.ReadAll(): ", err)
+        return
+    }
+
+    id := types.Uint64(string(body))
     for k, _ := range data {
-        if data[k].ID == request.ID{
-            request.ID = ww
+        if data[k].ID == id{
+            data[k].Firstname = (ww)
             break
         }
     } 
@@ -117,7 +124,9 @@ func main() {
     http.HandleFunc("/delete/data", deleteData)
     http.HandleFunc("/edit/data", editData)
     fmt.Println("Server is listening...")
-    if err := http.ListenAndServe(":8002", nil); err != nil {
+    if err := http.ListenAndServe(":8009", nil); err != nil {
         fmt.Println("main.go -> main() -> ListenAndServe(): ", err)
     }
 }
+
+// "<button class='popup-with-form' href='test-form1' id='edit' data-id='"+ value.ID +"' <td><img src='https://img.icons8.com/cute-clipart/16/000000/edit.png'> </button>"
