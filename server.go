@@ -74,14 +74,6 @@ func getData(w http.ResponseWriter, r *http.Request) {
     }
 }
 
-/*func init() {
-    data = []Data{
-        {ID: 1, Firstname: "Кантемир", Secondname: "Задорожный", Phone: "+380"},
-        {ID: 2, Firstname: "Анна", Secondname: "Задорожная", Phone: "+380"},
-        {ID: 3, Firstname: "Виктор", Secondname: "Кондратюк", Phone: "+380"},
-    }
-}*/
-
 func deleteData(w http.ResponseWriter, r *http.Request) {
     if r.Method != http.MethodDelete {
         return
@@ -103,15 +95,38 @@ func deleteData(w http.ResponseWriter, r *http.Request) {
     }
 }
 
+func editData(w http.ResponseWriter, r *http.Request) {
+    var ww = "Kant"
+    if r.Method != http.MethodPut {
+        return
+    }
+
+     body, err := ioutil.ReadAll(r.Body)
+    if err != nil {
+        fmt.Println("server.go -> editData() -> json.ReadAll(): ", err)
+        return
+    }
+
+    id := types.Uint64(string(body))
+    for k, _ := range data {
+        if data[k].ID == id{
+            data[k].Firstname = (ww)
+            break
+        }
+    } 
+    data = append(data)
+}
+
 func main() {
     http.HandleFunc("/login", IndexPage)
     http.HandleFunc("/save", saveUsers)
     http.HandleFunc("/get/data", getData)
     http.HandleFunc("/delete/data", deleteData)
-
+    http.HandleFunc("/edit/data", editData)
     fmt.Println("Server is listening...")
-    if err := http.ListenAndServe(":8001", nil); err != nil {
+    if err := http.ListenAndServe(":8009", nil); err != nil {
         fmt.Println("main.go -> main() -> ListenAndServe(): ", err)
     }
 }
 
+// "<button class='popup-with-form' href='test-form1' id='edit' data-id='"+ value.ID +"' <td><img src='https://img.icons8.com/cute-clipart/16/000000/edit.png'> </button>"

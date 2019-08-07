@@ -5,28 +5,53 @@
         <link rel="stylesheet" href="http://dimsemenov.com/plugins/magnific-popup/site-assets/all.min.css?v=0.9.9">
     </head> 
     <body>  
-<button class="popup-with-form" href="#test-form">+Add User</button>
-<div id="test-form" class="white-popup-block mfp-hide">
-    <h1 align="center">Creating User</h1>
-    <fieldset style="border:0;">
+        <button class="popup-with-form" href="#test-form">+Add User</button>
+        <div id="test-form" class="white-popup-block mfp-hide">
 
-        <ol>
-            <li>
-                <label for="firstname"><b>Firstname</b></label>  
-                <input name="firstname" id="firstname" type="text" class="margin1"> 
-            </li>
-            <li>
-                <label for="secondname"><b>Secondname</b></label>    
-                <input name="secondname" id="secondname" type="text"> 
-            </li>
-            <li>
-                <label for="phone"><b>Phone</b></label>  
-                <input  name="phone" id="phone" type="text" class="margin2">  
-            </li>
-                <button onclick="send()" id="send" class="close" >Save User!</button>
-        </ol>
-    </fieldset>
-</div>  
+        <h1 align="center">Creating User</h1>
+        <fieldset style="border:0;">
+        <div id="test-form" class="white-popup-block mfp-hide"></div>
+            <ol>
+                <li>
+                    <label for="firstname"><b>Firstname</b></label>  
+                    <input name="firstname" id="firstname" type="text" class="margin1"> 
+                </li>
+                <li>
+                    <label for="secondname"><b>Secondname</b></label>    
+                    <input name="secondname" id="secondname" type="text"> 
+                </li>
+                <li>
+                    <label for="phone"><b>Phone</b></label>  
+                    <input  name="phone" id="phone" type="text" class="margin2">  
+                </li>
+                    <button onclick="send()" id="send" class="close" >Save User!</button>
+            </ol>
+        </fieldset>
+    </div>
+    <!-- pop up for append button -->
+    <div id="test-form1" class="white-popup-block mfp-hide">
+
+        <h1 align="center">Editing User</h1>
+        <fieldset style="border:0;">
+        <div id="test-form1" class="white-popup-block mfp-hide"></div>
+            <ol>
+                <li>
+                    <label for="firstname"><b>Firstname</b></label>  
+                    <input name="firstname" id="firstname" type="text" class="margin1"> 
+                </li>
+                <li>
+                    <label for="secondname"><b>Secondname</b></label>    
+                    <input name="secondname" id="secondname" type="text"> 
+                </li>
+                <li>
+                    <label for="phone"><b>Phone</b></label>  
+                    <input  name="phone" id="phone" type="text" class="margin2">  
+                </li>
+                    <button onclick="send()" id="send" class="close" >Edit User!</button>
+            </ol>
+        </fieldset>
+    </div>
+    <!-- ---------------------------------------------------------------------- -->
         <button onclick="getUser()">Show User!</button>
     <table border="1px">
         <thead>
@@ -38,7 +63,6 @@
             </tr>
         </thead>
         <tbody id= "brd1">
-
         </tbody>
     </table>
     <script src="http://dimsemenov.com/plugins/magnific-popup/dist/jquery.magnific-popup.min.js?v=0.9.9"></script>
@@ -98,11 +122,11 @@
         $.get( "/get/data", function(data) {    
             $('#brd1').empty(); 
             jQuery.each(data, function( index, value ) {    
-                $('#d').append("<tr class='Name'> <td align = 'center'>  " + value.Firstname + "</td> <br> <td align = 'center'> " + value.Secondname + "</td><br><td align = 'center'>" + value.Phone+"</td><br><td align = 'center'><button class='delete' data-id='"+ value.ID +"' <td> Удалить!</button>"+  "</tr>"); 
+                $('#brd1').append("<tr class='Name'> <td align = 'center'>  " + value.Firstname + "</td> <br> <td align = 'center'> " + value.Secondname + "</td><br><td align = 'center'>" + value.Phone+"</td><br><td align = 'center'><button class='delete' data-id='"+ value.ID +"' <td><img src='https://img.icons8.com/color/16/000000/delete-sign.png'> </button>"+  "<button class='popup-with-form' href='#test-form1'>+Edit User</button>"+"</tr>"); 
             }); 
         }); 
     }   
-    $('#brd1').on('click', '.delete', function(){   
+    $('#brd1').on('click', '.delete', function() {   
         var data = $(this).attr("data-id"); 
         console.log($(this).attr("data-id")); 
          $.ajax({   
@@ -113,13 +137,23 @@
             dataType: "json",   
         }); 
     }); 
+    $('#brd1').on('click', '#edit', function(){   
+        $.ajax({   
+            url: '/edit/data',    
+            type: 'PUT', 
+            data: data, 
+            contentType: "application/javascript; charset=utf-8",   
+            dataType: "json",   
+        }); 
+    }); 
+
 </script>   
 
  <style> 
     button.save-close {
         overflow: visible;
         -webkit-appearance: none;
-}
+    }
     .margin1 {
         margin-left: 20px;
     }
@@ -171,5 +205,6 @@
         background-color: #c5c5c5;  
         border-radius:5px;  
         box-shadow: 0px 0px 10px #000;  
-    }   
+    } 
+ 
   </style>
