@@ -29,8 +29,7 @@
         </fieldset>
     </div>
     <!-- pop up for append button -->
-    <div id="test-form1" class="white-popup-block mfp-hide">
-
+    <dialog id="test-form1" class="white-popup-block mfp">
         <h1 align="center">Editing User</h1>
         <fieldset style="border:0;">
         <div id="test-form1" class="white-popup-block mfp-hide"></div>
@@ -47,10 +46,10 @@
                     <label for="phone"><b>Phone</b></label>  
                     <input  name="phone" id="phone" type="text" class="margin2">  
                 </li>
-                    <button onclick="send()" id="send" class="close" >Edit User!</button>
+                    <button onclick="editUser()" id="edit" class="close" >Edit User!</button>
             </ol>
         </fieldset>
-    </div>
+    </dialog>
     <!-- ---------------------------------------------------------------------- -->
         <button onclick="getUser()">Show User!</button>
     <table border="1px">
@@ -122,7 +121,7 @@
         $.get( "/get/data", function(data) {    
             $('#brd1').empty(); 
             jQuery.each(data, function( index, value ) {    
-                $('#brd1').append("<tr class='Name'> <td align = 'center'>  " + value.Firstname + "</td> <br> <td align = 'center'> " + value.Secondname + "</td><br><td align = 'center'>" + value.Phone+"</td><br><td align = 'center'><button class='delete' data-id='"+ value.ID +"' <td><img src='https://img.icons8.com/color/16/000000/delete-sign.png'> </button>"+  "<button class='popup-with-form' href='#test-form1'>+Edit User</button>"+"</tr>"); 
+                $('#brd1').append("<tr class='Name'> <td align = 'center'>  " + value.Firstname + "</td> <br> <td align = 'center'> " + value.Secondname + "</td><br><td align = 'center'>" + value.Phone+"</td><br><td align = 'center'><button class='delete' data-id='"+ value.ID +"' <td><img src='https://img.icons8.com/color/16/000000/delete-sign.png'> </button>"+  "<button class='popup-with-form' href='#test-form1' id='edit'>+Edit User</button>"+"</tr>"); 
             }); 
         }); 
     }   
@@ -138,14 +137,24 @@
         }); 
     }); 
     $('#brd1').on('click', '#edit', function(){   
-        $.ajax({   
-            url: '/edit/data',    
-            type: 'PUT', 
-            data: data, 
-            contentType: "application/javascript; charset=utf-8",   
-            dataType: "json",   
-        }); 
+        var pop = document.getElementById('test-form1');
+        pop.showModal();
     }); 
+
+    function editUser() {
+         var data = {    
+            "firstname": $('#firstname').val(), 
+            "secondname": $('#secondname').val(),   
+            "phone": $('#phone').val(), 
+        };
+         $.ajax({   
+            type: "PUT",   
+            url: "/edit/data",   
+            data: JSON.stringify(data), 
+            contentType: "application/javascript; charset=utf-8",   
+            dataType: "json",
+    });
+}
 
 </script>   
 
