@@ -40,16 +40,16 @@
         <fieldset style="border:0;">
             <ol>
                 <li>
-                    <label for="firstname"><b>Firstname</b></label>  
-                    <input name="firstname" id="firstname" type="text" class="margin1"> 
+                    <label for="firstnameEdit"><b>Firstname</b></label>  
+                    <input name="firstname" id="firstnameEdit" type="text" class="margin1"> 
                 </li>
                 <li>
-                    <label for="secondname"><b>Secondname</b></label>    
-                    <input name="secondname" id="secondname" type="text"> 
+                    <label for="secondnameEdit"><b>Secondname</b></label>    
+                    <input name="secondname" id="secondnameEdit" type="text"> 
                 </li>
                 <li>
-                    <label for="phone"><b>Phone</b></label>  
-                    <input  name="phone" id="phone" type="text" class="margin2">  
+                    <label for="phoneEdit"><b>Phone</b></label>  
+                    <input  name="phone" id="phoneEdit" type="text" class="margin2">  
                 </li>
                     <button onclick="editUser()" id="edit" class="close" >Edit User!</button>
             </ol>
@@ -82,7 +82,6 @@
         $.magnificPopup.close();
     });
 });
-
     $(document).ready(function() {
     $('.popup-with-form').magnificPopup({
         type: 'inline',
@@ -159,38 +158,30 @@
     } 
     function editUser() {
          var data = {    
-            "firstname": $('#firstname1').val(), 
-            "secondname": $('#secondname1').val(),   
-            "phone": $('#phone1').val(), 
+            "firstname": $('#firstnameEdit').val(), 
+            "secondname": $('#secondnameEdit').val(),   
+            "phone": $('#phoneEdit').val(), 
         };
          $.ajax({   
             type: "PUT",   
             url: "/edit/data",   
-            data: JSON.stringify(data), 
+            data: data, 
             contentType: "application/javascript; charset=utf-8",   
             dataType: "json",
     });
 }
-
 </script>   
 
  <style> 
-    button.save-close1 {
-        overflow: visible;
-        -webkit-appearance: none;
-    }
     .margin1 {
         margin-left: 20px;
     }
-
     .margin2 {
         margin-left: 44px;
     }
-
     .pad1 {
         padding-right: 5px;
     }
-
     .white-popup-block {
         background: #84a4e0;
         padding: 20px 30px;
@@ -214,11 +205,9 @@
         position: absolute; 
         border-right: 600px;    
     } 
-
     {  
         font-family: Areal;    
     }
-
     .b-popup-content{  
         margin-left: :200px auto 0px auto;  
         position: absolute; 
@@ -244,7 +233,6 @@
   background-color: rgb(0,0,0); /* Fallback color */
   background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
-
 /* Modal Content/Box */
 .modal-content {
   background-color: #84a4e0;
@@ -253,7 +241,6 @@
   border: 1px solid #888;
   width: 400px; /* Could be more or less, depending on screen size */
 }
-
 /* The Close Button */
 .close {
   color: #aaa;
@@ -261,7 +248,6 @@
   font-size: 16px;
   font-weight: bold;
 }
-
 .close:hover,
 .close:focus {
   color: black;
