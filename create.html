@@ -28,36 +28,6 @@
             </ol>
         </fieldset>
     </div>
-    <!-- pop up for append button -->
-    <!-- Trigger/Open The Modal -->
-
-<!-- The Modal -->
-<div id="myModal" class="modal">
-
-  <!-- Modal content -->
-  <div class="modal-content">
-    <span class="close">&times;</span>
-        <fieldset style="border:0;">
-            <ol>
-                <li>
-                    <label for="firstnameEdit"><b>Firstname</b></label>  
-                    <input name="firstname" id="firstnameEdit" type="text" class="margin1"> 
-                </li>
-                <li>
-                    <label for="secondnameEdit"><b>Secondname</b></label>    
-                    <input name="secondname" id="secondnameEdit" type="text"> 
-                </li>
-                <li>
-                    <label for="phoneEdit"><b>Phone</b></label>  
-                    <input  name="phone" id="phoneEdit" type="text" class="margin2">  
-                </li>
-                    <button onclick="editUser()" id="edit" class="close" >Edit User!</button>
-            </ol>
-        </fieldset>
-  </div>
-
-</div>
-    <!-- ---------------------------------------------------------------------- -->
         <button onclick="getUser()">Show User!</button>
     <table border="1px">
         <thead>
@@ -127,7 +97,7 @@
         $.get( "/get/data", function(data) {    
             $('#brd1').empty(); 
             jQuery.each(data, function( index, value ) {    
-                $('#brd1').append("<tr class='Name'> <td align = 'center'>  " + value.Firstname + "</td> <br> <td align = 'center'> " + value.Secondname + "</td><br><td align = 'center'>" + value.Phone+"</td><br><td align = 'center'><button class='delete' data-id='"+ value.ID +"' <td><img src='https://img.icons8.com/color/16/000000/delete-sign.png'> </button>"+  "<button class='popup-with-form' href='#test-form1' id='edit'>+Edit User</button>"+"</tr>"); 
+                $('#brd1').append("<tr class='Name'> <td align = 'center'>  " + value.Firstname + "</td> <br> <td align = 'center'> " + value.Secondname + "</td><br><td align = 'center'>" + value.Phone+"</td><br><td align = 'center'><button class='delete' data-id='"+ value.ID +"' <td><img src='https://img.icons8.com/color/16/000000/delete-sign.png'> </button>"+  "<button class='popup-with-form' href='#test-form1' id='edit'>+Edit User</button></tr>"+"<div id='brd2'></div>"); 
             }); 
         }); 
     }   
@@ -142,34 +112,9 @@
             dataType: "json",   
         }); 
     }); 
-    $('#brd1').on('click', '#edit', function(){   
-        var btn = document.getElementById("edit");
-            modal.style.display = "block";
-    });
-        var span = document.getElementsByClassName("close")[0]; 
-        var modal = document.getElementById("myModal");
-        span.onclick = function() {
-             modal.style.display = "none";
-    }
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
-        }
-    } 
-    function editUser() {
-         var data = {    
-            "firstname": $('#firstnameEdit').val(), 
-            "secondname": $('#secondnameEdit').val(),   
-            "phone": $('#phoneEdit').val(), 
-        };
-         $.ajax({   
-            type: "PUT",   
-            url: "/edit/data",   
-            data: data, 
-            contentType: "application/javascript; charset=utf-8",   
-            dataType: "json",
-    });
-}
+    $('#brd1').on('click', '#edit', function(){ 
+        $('#brd2').append("</div><div id='myModal' class='modal'><div class='modal-content'><span class='close'>&times;</span><fieldset style='border:0;'><ol><li><label for='firstnameEdit'><b>Firstname</b></label>  <input name='firstname' id='firstnameEdit' type='text' class='margin1'> </li><li><label for='secondnameEdit'><b>Secondname</b></label><input name='secondname' id='secondnameEdit' type='text'> </li><li><label for='phoneEdit'><b>Phone</b></label>  <input  name='phone' id='phoneEdit' type='text' class='margin2'>  </li><button onclick='editUser()' class='close' >Edit User!</button></ol></fieldset></div></div>");
+        });
 </script>   
 
  <style> 
