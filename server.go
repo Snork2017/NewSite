@@ -14,6 +14,7 @@ type Data struct {
     Firstname  string
     Secondname string
     Phone      string
+    FirstnameEdit string 
 }
 
 var (
@@ -94,29 +95,28 @@ func deleteData(w http.ResponseWriter, r *http.Request) {
         }
     }
 }
-
 func editData(w http.ResponseWriter, r *http.Request) {
-    var ww = "Kant"
+    //var ww = "kant"
+    var request Data
     if r.Method != http.MethodPut {
         return
-    }
-
-     body, err := ioutil.ReadAll(r.Body)
+}
+    body, err := ioutil.ReadAll(r.Body)
+    json.Unmarshal(body, &data)
+    fmt.Println(&data)
     if err != nil {
         fmt.Println("server.go -> editData() -> json.ReadAll(): ", err)
         return
     }
-
     id := types.Uint64(string(body))
-    for k, _ := range data {
+    for k := range data {
         if data[k].ID == id{
-            data[k].Firstname = (ww)
+            data[k].Firstname = request.FirstnameEdit
             break
         }
     } 
     data = append(data)
 }
-
 
 func main() {
     http.HandleFunc("/login", IndexPage)
@@ -131,4 +131,3 @@ func main() {
 }
 
 // "<button class='popup-with-form' href='test-form1' id='edit' data-id='"+ value.ID +"' <td><img src='https://img.icons8.com/cute-clipart/16/000000/edit.png'> </button>"
-//</div><div id='myModal' class='modal'><div class='modal-content'><span class='close'>&times;</span><fieldset style='border:0;'><ol><li><label for='firstnameEdit'><b>Firstname</b></label>  <input name='firstname' id='firstnameEdit' type='text' class='margin1'> </li><li><label for='secondnameEdit'><b>Secondname</b></label><input name='secondname' id='secondnameEdit' type='text'> </li><li><label for='phoneEdit'><b>Phone</b></label>  <input  name='phone' id='phoneEdit' type='text' class='margin2'>  </li><button onclick='editUser()' id='edit' class='close' >Edit User!</button></ol></fieldset></div></div>
