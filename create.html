@@ -24,40 +24,10 @@
                     <label for="phone"><b>Phone</b></label>  
                     <input  name="phone" id="phone" type="text" class="margin2">  
                 </li>
-                    <button onclick="send()" id="send" class="close1" >Save User!</button>
+                    <button onclick="send()" id="send" class="close" >Save User!</button>
             </ol>
         </fieldset>
     </div>
-    <!-- pop up for append button -->
-    <!-- Trigger/Open The Modal -->
-
-<!-- The Modal -->
-<div id="myModal" class="modal">
-
-  <!-- Modal content -->
-  <div class="modal-content">
-    <span class="close">&times;</span>
-        <fieldset style="border:0;">
-            <ol>
-                <li>
-                    <label for="firstnameEdit"><b>Firstname</b></label>  
-                    <input name="firstname" id="firstnameEdit" type="text" class="margin1"> 
-                </li>
-                <li>
-                    <label for="secondnameEdit"><b>Secondname</b></label>    
-                    <input name="secondname" id="secondnameEdit" type="text"> 
-                </li>
-                <li>
-                    <label for="phoneEdit"><b>Phone</b></label>  
-                    <input  name="phone" id="phoneEdit" type="text" class="margin2">  
-                </li>
-                    <button onclick="editUser()" id="edit" class="close" >Edit User!</button>
-            </ol>
-        </fieldset>
-  </div>
-
-</div>
-    <!-- ---------------------------------------------------------------------- -->
         <button onclick="getUser()">Show User!</button>
     <table border="1px">
         <thead>
@@ -71,6 +41,7 @@
         <tbody id= "brd1">
         </tbody>
     </table>
+    <div id='brd2'></div>
     <script src="http://dimsemenov.com/plugins/magnific-popup/dist/jquery.magnific-popup.min.js?v=0.9.9"></script>
     </body> 
 </html> 
@@ -123,18 +94,18 @@
             }   
         }); 
     }   
-     function getUser() {   
+    function getUser() {   
         $.get( "/get/data", function(data) {    
             $('#brd1').empty(); 
             jQuery.each(data, function( index, value ) {    
-                $('#brd1').append("<tr class='Name'> <td align = 'center'>  " + value.Firstname + "</td> <br> <td align = 'center'> " + value.Secondname + "</td><br><td align = 'center'>" + value.Phone+"</td><br><td align = 'center'><button class='delete' data-id='"+ value.ID +"' <td><img src='https://img.icons8.com/color/16/000000/delete-sign.png'> </button>"+  "<button class='popup-with-form' href='#test-form1' id='edit'>+Edit User</button>"+"</tr>"); 
+                $('#brd1').append("<tr class='Name'> <td align = 'center'>  " + value.Firstname + "</td> <br> <td align = 'center'> " + value.Secondname + "</td><br><td align = 'center'>" + value.Phone+"</td><br><td align = 'center'><button class='delete' data-id='"+ value.ID +"' <td><img src='https://img.icons8.com/color/16/000000/delete-sign.png'> </button>"+  "<button class='popup-with-form' href='#test-form1' data-id='"+ value.ID +"' id='edit'>+Edit User</button>"+"</tr>");
             }); 
         }); 
     }   
     $('#brd1').on('click', '.delete', function() {   
         var data = $(this).attr("data-id"); 
         console.log($(this).attr("data-id")); 
-         $.ajax({   
+        $.ajax({   
             url: '/delete/data',    
             type: 'DELETE', 
             data: data, 
@@ -142,36 +113,37 @@
             dataType: "json",   
         }); 
     }); 
-    $('#brd1').on('click', '#edit', function(){   
-        var btn = document.getElementById("edit");
-            modal.style.display = "block";
-    });
-        var span = document.getElementsByClassName("close")[0]; 
-        var modal = document.getElementById("myModal");
-        span.onclick = function() {
-             modal.style.display = "none";
-    }
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
-        }
-    } 
-    function editUser() {
-         var data = {    
-            "firstname": $('#firstnameEdit').val(), 
-            "secondname": $('#secondnameEdit').val(),   
-            "phone": $('#phoneEdit').val(), 
-        };
-         $.ajax({   
-            type: "PUT",   
-            url: "/edit/data",   
+    $('#brd1').on('click', '#edit', function(){
+        var data = $(this).attr("data-id"); 
+        console.log($(this).attr("data-id"));
+            $.ajax({   
+            url: '/edit/data',    
+            type: 'PUT', 
             data: data, 
             contentType: "application/javascript; charset=utf-8",   
-            dataType: "json",
-    });
-}
-</script>   
+            dataType: "json",     
+});
+        $.get( "/get/data", function(data) {    
+            $('#brd2').empty(); 
+            jQuery.each(data, function( index, value ) {  
+        $('#brd2').append("<div id='test-form1' class='white-popup-block'><h1 align='center'>Editing User!</h1><fieldset style='border:0;'><ol><li><label for='firstnameEdit'><b>Firstname</b></label><input id='firstnameEdit' name='firstnameEdit' type='text' class='margin1' value='wdqwdqwq'></li><li><label for='secondnameEdit'><b>Secondname</b></label><input name='secondname' id='secondnameEdit' type='text'></li><li><label for='phoneEdit'><b>Phone</b></label><input  name='phone' id='phoneEdit' type='text' class='margin2'></li><button class='close' data-name='"+value.FirstnameEdit+"' id='editUser'>Edit User!</button></ol></fieldset></div>");
+        });
+    }); 
+});   
+    $('#brd2').on('click', '#editUser', function(){
+        var data = $(this).attr("data-name"); 
+        console.log(data);
+        $.ajax({   
+            url: '/edit/data',    
+            type: 'PUT', 
+            data: data,
+            contentType: "application/javascript; charset=utf-8",   
+            dataType: "json",  
+        });
+    });      
 
+</script>   
+<script src="http://dimsemenov.com/plugins/magnific-popup/dist/jquery.magnific-popup.min.js?v=0.9.9"></script>
  <style> 
     .margin1 {
         margin-left: 20px;
@@ -208,6 +180,14 @@
     {  
         font-family: Areal;    
     }
+    .brd2 { 
+        width: 200px;   
+        position: absolute; 
+        border-right: 600px;    
+    } 
+    {  
+        font-family: Areal;    
+    }
     .b-popup-content{  
         margin-left: :200px auto 0px auto;  
         position: absolute; 
@@ -220,39 +200,4 @@
         border-radius:5px;  
         box-shadow: 0px 0px 10px #000;  
     } 
- 
-    .modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
-  left: 0;
-  top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-}
-/* Modal Content/Box */
-.modal-content {
-  background-color: #84a4e0;
-  margin: 15% auto; /* 15% from the top and centered */
-  padding: 20px;
-  border: 1px solid #888;
-  width: 400px; /* Could be more or less, depending on screen size */
-}
-/* The Close Button */
-
-.close {
-  color: #aaa;
-  float: right;
-  font-size: 16px;
-  font-weight: bold;
-}
-.close:hover,
-.close:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
-}
   </style>

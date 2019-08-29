@@ -14,6 +14,7 @@ type Data struct {
     Firstname  string
     Secondname string
     Phone      string
+    FirstnameEdit string 
 }
 
 var (
@@ -94,29 +95,28 @@ func deleteData(w http.ResponseWriter, r *http.Request) {
         }
     }
 }
-
 func editData(w http.ResponseWriter, r *http.Request) {
-    var ww = "Kant"
+    //var ww = "kant"
+    var request Data
     if r.Method != http.MethodPut {
         return
-    }
-
-     body, err := ioutil.ReadAll(r.Body)
+}
+    body, err := ioutil.ReadAll(r.Body)
+    json.Unmarshal(body, &data)
+    fmt.Println(&data)
     if err != nil {
         fmt.Println("server.go -> editData() -> json.ReadAll(): ", err)
         return
     }
-
     id := types.Uint64(string(body))
-    for k, _ := range data {
+    for k := range data {
         if data[k].ID == id{
-            data[k].Firstname = (ww)
+            data[k].Firstname = request.FirstnameEdit
             break
         }
     } 
     data = append(data)
 }
-
 
 func main() {
     http.HandleFunc("/login", IndexPage)
