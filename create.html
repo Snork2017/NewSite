@@ -39,6 +39,7 @@
             </tr>
         </thead>
         <tbody id= "brd1">
+            
         </tbody>
     </table>
     <div id='brd2'></div>
@@ -112,7 +113,7 @@
             contentType: "application/javascript; charset=utf-8",   
             dataType: "json",   
         }); 
-    }); 
+    });
     $('#brd1').on('click', '#edit', function(){
         var data = $(this).attr("data-id"); 
         console.log($(this).attr("data-id"));
@@ -122,29 +123,31 @@
             data: data, 
             contentType: "application/javascript; charset=utf-8",   
             dataType: "json",     
-});
+        });        
         $.get( "/get/data", function(data) {    
             $('#brd2').empty(); 
             jQuery.each(data, function( index, value ) {  
-        $('#brd2').append("<div id='test-form1' class='white-popup-block'><h1 align='center'>Editing User!</h1><fieldset style='border:0;'><ol><li><label for='firstnameEdit'><b>Firstname</b></label><input id='firstnameEdit' name='firstnameEdit' type='text' class='margin1' value='wdqwdqwq'></li><li><label for='secondnameEdit'><b>Secondname</b></label><input name='secondname' id='secondnameEdit' type='text'></li><li><label for='phoneEdit'><b>Phone</b></label><input  name='phone' id='phoneEdit' type='text' class='margin2'></li><button class='close' data-name='"+value.FirstnameEdit+"' id='editUser'>Edit User!</button></ol></fieldset></div>");
+        $('#brd2').append("<div id='test-form1' class='white-popup-block'><h1 align='center'>Editing User!</h1><fieldset style='border:0;'><div id='test-form1' class='white-popup-block mfp-hide'></div><ol><li><label for='firstnameEdit'><b>Firstname</b></label><input id='firstnameEdit' name='firstnameEdit' type='text' class='margin1'></li><li><label for='secondnameEdit'><b>Secondname</b></label><input name='secondnameEdit' id='secondnameEdit' type='text'></li><li><label for='phoneEdit'><b>Phone</b></label><input  name='phoneEdit' id='phoneEdit' type='text' class='margin2'></li><button  class='close' id='editUser'>Edit User!</button></ol></fieldset></div>");
         });
     }); 
-});   
+});       
     $('#brd2').on('click', '#editUser', function(){
-        var data = $(this).attr("data-name"); 
-        console.log(data);
+        var name = $("#firstnameEdit").val(); 
+        console.log(name);
         $.ajax({   
             url: '/edit/data',    
             type: 'PUT', 
-            data: data,
-            contentType: "application/javascript; charset=utf-8",   
-            dataType: "json",  
-        });
-    });      
-
+            data: name,
+            contentType: "application/javascript; charset=utf-8",  
+            dataType: "json", 
+        }); 
+});  
 </script>   
 <script src="http://dimsemenov.com/plugins/magnific-popup/dist/jquery.magnific-popup.min.js?v=0.9.9"></script>
  <style> 
+ mfp-close-btn-in .mfp-close {
+    color: #333;
+}
     .margin1 {
         margin-left: 20px;
     }
@@ -156,7 +159,7 @@
     }
     .white-popup-block {
         background: #84a4e0;
-        padding: 20px 30px;
+        padding: 21px 30px;
         text-align: left;
         max-width: 400px;
         margin: 40px auto;
@@ -185,9 +188,6 @@
         position: absolute; 
         border-right: 600px;    
     } 
-    {  
-        font-family: Areal;    
-    }
     .b-popup-content{  
         margin-left: :200px auto 0px auto;  
         position: absolute; 

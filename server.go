@@ -11,7 +11,7 @@ import (
 
 type Data struct {
     ID         uint64
-    Firstname  string
+    Firstname  string 
     Secondname string
     Phone      string
     FirstnameEdit string 
@@ -21,6 +21,14 @@ var (
     data  []Data
     count uint64
 )
+
+func init() {
+    data = []Data{
+        {ID: 1, Firstname: "Кантемир", Secondname: "Задорожный", Phone: "+380"},
+        {ID: 2, Firstname: "Анна", Secondname: "Задорожная", Phone: "+380"},
+        {ID: 3, Firstname: "Виктор", Secondname: "Кондратюк", Phone: "+380"},
+    }
+}
 
 func IndexPage(w http.ResponseWriter, r *http.Request) {
     if r.Method != http.MethodGet {
@@ -102,17 +110,18 @@ func editData(w http.ResponseWriter, r *http.Request) {
         return
 }
     body, err := ioutil.ReadAll(r.Body)
-    json.Unmarshal(body, &data)
-    fmt.Println(&data)
+    fmt.Println(string(body))
+    json.Unmarshal(body, request)
     if err != nil {
         fmt.Println("server.go -> editData() -> json.ReadAll(): ", err)
         return
     }
-    id := types.Uint64(string(body))
+    fmt.Println(request.FirstnameEdit)
+    name := string(body)
+    fmt.Println("Имя:", name)
     for k := range data {
-        if data[k].ID == id{
-            data[k].Firstname = request.FirstnameEdit
-            break
+        if data[k].ID == request.ID{
+            data[k].Firstname = name
         }
     } 
     data = append(data)
