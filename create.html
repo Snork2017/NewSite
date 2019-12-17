@@ -1,74 +1,97 @@
 <!DOCTYPE html> 
-<html>  
-    <head>  
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>   
-        <link rel="stylesheet" href="http://dimsemenov.com/plugins/magnific-popup/site-assets/all.min.css?v=0.9.9">
-    </head> 
-    <body>  
-        <button class="popup-with-form" href="#test-form">+Add User</button>
-        <div id="test-form" class="white-popup-block mfp-hide">
+    <html>  
+        <head>  
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>   
+            <link rel="stylesheet" href="http://dimsemenov.com/plugins/magnific-popup/site-assets/all.min.css?v=0.9.9">
+        </head> 
+        <body>  
+            <button class="popup-with-form" href="#test-form">+Add User</button>
+            <div id="test-form" class="white-popup-block mfp-hide">
 
-        <h1 align="center">Creating User</h1>
-        <fieldset style="border:0;">
-        <div id="test-form" class="white-popup-block mfp-hide"></div>
-            <ol>
-                <li>
-                    <label for="firstname"><b>Firstname</b></label>  
-                    <input name="firstname" id="firstname" type="text" class="margin1"> 
-                </li>
-                <li>
-                    <label for="secondname"><b>Secondname</b></label>    
-                    <input name="secondname" id="secondname" type="text"> 
-                </li>
-                <li>
-                    <label for="phone"><b>Phone</b></label>  
-                    <input  name="phone" id="phone" type="text" class="margin2">  
-                </li>
-                    <button onclick="send()" id="send" class="close" >Save User!</button>
-            </ol>
-        </fieldset>
-    </div>
-        <button onclick="getUser()">Show User!</button>
-    <table border="1px">
-        <thead>
-            <tr>
-                <td width ="86" bgcolor="lightcyan" align="center">Firstname</td>
-                <td width ="86" bgcolor="lightcyan" align="center">Secondname</td>
-                <td width ="86" bgcolor="lightcyan" align="center">Phone</td>
-                <td width ="86" bgcolor="lightcyan" align="center">Actions</td>
-            </tr>
-        </thead>
-        <tbody id= "brd1">
-        </tbody>
-    </table>
-    <div id='brd2'></div>
-    <script src="http://dimsemenov.com/plugins/magnific-popup/dist/jquery.magnific-popup.min.js?v=0.9.9"></script>
-    </body> 
-</html> 
+            <h1 align="center">Creating User</h1>
+            <fieldset style="border:0;">
+            <div id="test-form" class="white-popup-block mfp-hide"></div>
+                <ol>
+                    <li>
+                        <label for="firstname"><b>Firstname</b></label>  
+                        <input name="firstname" id="firstname" type="text" class="margin1"> 
+                    </li>
+                    <li>
+                        <label for="secondname"><b>Secondname</b></label>    
+                        <input name="secondname" id="secondname" type="text"> 
+                    </li>
+                    <li>
+                        <label for="phone"><b>Phone</b></label>  
+                        <input  name="phone" id="phone" type="text" class="margin2">  
+                    </li>
+                        <button onclick="send()" id="send" class="close" >Save User!</button>
+                </ol>
+            </fieldset>
+        </div>
+            <button onclick="getUser()">Show User!</button>
+             <div id="test-form1" class="white-popup-block mfp-hide">
 
- <script>   
+            <h1 align="center">Editing User</h1>
+            <fieldset style="border:0;">
+            <div id="test-form1" class="white-popup-block mfp-hide"></div>
+                <ol>
+                    <li>
+                        <label for="firstnameEdit"><b>Firstname</b></label>  
+                        <input name="firstnameEdit" id="firstnameEdit" type="text" class="margin1"> 
+                    </li>
+                    <li>
+                        <label for="secondnameEdit"><b>Secondname</b></label>    
+                        <input name="secondnameEdit" id="secondnameEdit" type="text"> 
+                    </li>
+                    <li>
+                        <label for="phoneEdit"><b>Phone</b></label>  
+                        <input  name="phoneEdit" id="phoneEdit" type="text" class="margin2">  
+                    </li>
+                        <button id="editUser" class="close" >Edit User</button>
+                </ol>
+            </fieldset>
+        </div>
+        <table border="1px">
+            <thead>
+                <tr>
+                    <td width ="86" bgcolor="lightcyan" align="center">Firstname</td>
+                    <td width ="86" bgcolor="lightcyan" align="center">Secondname</td>
+                    <td width ="86" bgcolor="lightcyan" align="center">Phone</td>
+                    <td width ="86" bgcolor="lightcyan" align="center">Actions</td>
+                </tr>
+            </thead>
+            <tbody id= "brd1">
+                
+            </tbody>
+        </table>
+        <div id='brd2'></div>
+        <script src="http://dimsemenov.com/plugins/magnific-popup/dist/jquery.magnific-popup.min.js?v=0.9.9"></script>
+        </body> 
+    </html> 
+
+<script>   
     //pop up
     $(document).ready(function() {
-    $('.close').click(function() {
-        $.magnificPopup.close();
+        $('.close').click(function() {
+            $.magnificPopup.close();
+        });
     });
-});
     $(document).ready(function() {
-    $('.popup-with-form').magnificPopup({
-        type: 'inline',
-        preloader: false,
-        focus: '#firstname',
-        callbacks: {
-            beforeOpen: function() {
-                if($(window).width() < 700) {
-                    this.st.focus = false;
-                } else {
-                    this.st.focus = '#firstname';
+        $('.popup-with-form').magnificPopup({
+            type: 'inline',
+            preloader: false,
+            focus: '#firstname',
+            callbacks: {
+                beforeOpen: function() {
+                    if($(window).width() < 700) {
+                        this.st.focus = false;
+                    } else {
+                        this.st.focus = '#firstname';
+                    }
                 }
             }
-        }
+        });
     });
-});
     function send() {   
         var data = {    
             "firstname": $('#firstname').val(), 
@@ -98,8 +121,22 @@
         $.get( "/get/data", function(data) {    
             $('#brd1').empty(); 
             jQuery.each(data, function( index, value ) {    
-                $('#brd1').append("<tr class='Name'> <td align = 'center'>  " + value.Firstname + "</td> <br> <td align = 'center'> " + value.Secondname + "</td><br><td align = 'center'>" + value.Phone+"</td><br><td align = 'center'><button class='delete' data-id='"+ value.ID +"' <td><img src='https://img.icons8.com/color/16/000000/delete-sign.png'> </button>"+  "<button class='popup-with-form' href='#test-form1' data-id='"+ value.ID +"' id='edit'>+Edit User</button>"+"</tr>");
+                $('#brd1').append("<tr class='Name'> <td align = 'center'>  " + value.Firstname + "</td> <br> <td align = 'center'> " + value.Secondname + "</td><br><td align = 'center'>" + value.Phone+"</td><br><td align = 'center'><button class='delete' data-id='"+ value.id +"' <td><img src='https://img.icons8.com/color/16/000000/delete-sign.png'> </button>"+  "<button class='popup-with-form' href='#test-form1' data-id='"+ value.id +"' id='edit' data-firstName='"+value.Firstname+"' data-secondName='"+value.Secondname+"' data-Phone='"+value.Phone+"'>+Edit User</button>"+"</tr>");
             }); 
+            $('.popup-with-form').magnificPopup({
+            type: 'inline',
+            preloader: false,
+            focus: '#firstname',
+            callbacks: {
+                beforeOpen: function() {
+                    if($(window).width() < 700) {
+                        this.st.focus = false;
+                    } else {
+                        this.st.focus = '#firstname';
+                    }
+                }
+            }
+        });
         }); 
     }   
     $('#brd1').on('click', '.delete', function() {   
@@ -112,92 +149,102 @@
             contentType: "application/javascript; charset=utf-8",   
             dataType: "json",   
         }); 
-    }); 
-    $('#brd1').on('click', '#edit', function(){
-        var data = $(this).attr("data-id"); 
-        console.log($(this).attr("data-id"));
-            $.ajax({   
-            url: '/edit/data',    
-            type: 'PUT', 
-            data: data, 
-            contentType: "application/javascript; charset=utf-8",   
-            dataType: "json",     
-});
-        $.get( "/get/data", function(data) {    
-            $('#brd2').empty(); 
-            jQuery.each(data, function( index, value ) {  
-        $('#brd2').append("<div id='test-form1' class='white-popup-block'><h1 align='center'>Editing User!</h1><fieldset style='border:0;'><ol><li><label for='firstnameEdit'><b>Firstname</b></label><input id='firstnameEdit' name='firstnameEdit' type='text' class='margin1' value='wdqwdqwq'></li><li><label for='secondnameEdit'><b>Secondname</b></label><input name='secondname' id='secondnameEdit' type='text'></li><li><label for='phoneEdit'><b>Phone</b></label><input  name='phone' id='phoneEdit' type='text' class='margin2'></li><button class='close' data-name='"+value.FirstnameEdit+"' id='editUser'>Edit User!</button></ol></fieldset></div>");
-        });
-    }); 
-});   
-    $('#brd2').on('click', '#editUser', function(){
-        var data = $(this).attr("data-name"); 
-        console.log(data);
-        $.ajax({   
-            url: '/edit/data',    
-            type: 'PUT', 
-            data: data,
-            contentType: "application/javascript; charset=utf-8",   
-            dataType: "json",  
-        });
-    });      
+    });
 
-</script>   
-<script src="http://dimsemenov.com/plugins/magnific-popup/dist/jquery.magnific-popup.min.js?v=0.9.9"></script>
- <style> 
-    .margin1 {
-        margin-left: 20px;
+    $('#brd1').on('click', '#edit', function(){
+        var id = $(this).attr("data-id");
+        var firstName = $(this).attr("data-firstName");
+        var secondName = $(this).attr("data-secondName");
+        var phone = $(this).attr("data-phone");
+        $('#firstnameEdit').val(firstName);
+        $('#secondnameEdit').val(secondName);
+        $('#phoneEdit').val(phone);
+        $('#editUser').val(id);
+        $('#editUser').on('click', function() {
+            console.log(parseInt($('#editUser').attr("data-id")), $('#editUser').attr("data-id"));
+            var id = parseInt($('#editUser').val());
+            var data = {
+                'id': id,
+                'firstName': $('#firstnameEdit').val(),
+                'secondName': $('#secondnameEdit').val(),
+                'phone': $('#phoneEdit').val(),
+            }
+            $.ajax({   
+                url: '/edit/data',    
+                type: 'POST', 
+                data: JSON.stringify(data),
+                contentType: "application/javascript; charset=utf-8",  
+                dataType: "json", 
+            }); 
+        });
+    });  
+    </script>   
+    <script src="http://dimsemenov.com/plugins/magnific-popup/dist/jquery.magnific-popup.min.js?v=0.9.9"></script>
+     <style> 
+    input:read-only {
+        background-color: #aaa;
+        border: 1px solid #888;
+}
+
+    textarea:read-only:hover {
+        cursor: not-allowed;
+}
+     mfp-close-btn-in .mfp-close {
+        color: #333;
     }
-    .margin2 {
-        margin-left: 44px;
-    }
-    .pad1 {
-        padding-right: 5px;
-    }
-    .white-popup-block {
-        background: #84a4e0;
-        padding: 20px 30px;
-        text-align: left;
-        max-width: 400px;
-        margin: 40px auto;
-        position: relative;
-    }
-    .hidden {
-        display: none;
-    }  
-    .brd {   
-        border: 4px double black;   
-        background: #fc3;   
-        padding: 1px;   
-        margin-left: 50%;   
-        width: 100px;   
-   }    
-    .brd1 { 
-        width: 200px;   
-        position: absolute; 
-        border-right: 600px;    
-    } 
-    {  
-        font-family: Areal;    
-    }
-    .brd2 { 
-        width: 200px;   
-        position: absolute; 
-        border-right: 600px;    
-    } 
-    {  
-        font-family: Areal;    
-    }
-    .b-popup-content{  
-        margin-left: :200px auto 0px auto;  
-        position: absolute; 
-        top:100px;  
-        right: 500px;   
-        width:300px;    
-        height: 400px;  
-        padding:10px;   
-        background-color: #c5c5c5;  
-        border-radius:5px;  
-        box-shadow: 0px 0px 10px #000;  
-    } 
-  </style>
+        .margin1 {
+            margin-left: 20px;
+        }
+        .margin2 {
+            margin-left: 44px;
+        }
+        .margin3 {
+            margin-left: 75px;
+        }
+        .pad1 {
+            padding-right: 5px;
+        }
+        .white-popup-block {
+            background: #84a4e0;
+            padding: 21px 30px;
+            text-align: left;
+            max-width: 400px;
+            margin: 40px auto;
+            position: relative;
+        }
+        .hidden {
+            display: none;
+        }  
+        .brd {   
+            border: 4px double black;   
+            background: #fc3;   
+            padding: 1px;   
+            margin-left: 50%;   
+            width: 100px;   
+       }    
+        .brd1 { 
+            width: 200px;   
+            position: absolute; 
+            border-right: 600px;    
+        } 
+        {  
+            font-family: Areal;    
+        }
+        .brd2 { 
+            width: 200px;   
+            position: absolute; 
+            border-right: 600px;    
+        } 
+        .b-popup-content{  
+            margin-left: :200px auto 0px auto;  
+            position: absolute; 
+            top:100px;  
+            right: 500px;   
+            width:300px;    
+            height: 400px;  
+            padding:10px;   
+            background-color: #c5c5c5;  
+            border-radius:5px;  
+            box-shadow: 0px 0px 10px #000;  
+        } 
+      </style>
