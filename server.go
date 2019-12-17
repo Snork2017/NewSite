@@ -10,11 +10,10 @@ import (
 )
 
 type Data struct {
-    ID         uint64
+    ID         uint64 `json:"id"`
     Firstname  string 
     Secondname string
     Phone      string
-    FirstnameEdit string 
 }
 
 var (
@@ -106,22 +105,26 @@ func deleteData(w http.ResponseWriter, r *http.Request) {
 func editData(w http.ResponseWriter, r *http.Request) {
     //var ww = "kant"
     var request Data
-    if r.Method != http.MethodPut {
+    if r.Method != http.MethodPost {
         return
 }
     body, err := ioutil.ReadAll(r.Body)
-    fmt.Println(string(body))
-    json.Unmarshal(body, request)
     if err != nil {
         fmt.Println("server.go -> editData() -> json.ReadAll(): ", err)
         return
     }
-    fmt.Println(request.FirstnameEdit)
-    name := string(body)
-    fmt.Println("Имя:", name)
+    fmt.Println(string(body))
+    if json.Unmarshal(body, &request);   err != nil {
+        fmt.Println("server.go -> editData() -> json.Unmarshal(): ", err)
+        return
+    }
+    fmt.Println("ИМЯ", request)
     for k := range data {
         if data[k].ID == request.ID{
-            data[k].Firstname = name
+            data[k].Firstname = request.Firstname
+            data[k].Secondname = request.Secondname
+            data[k].Phone = request.Phone
+
         }
     } 
     data = append(data)
@@ -134,7 +137,7 @@ func main() {
     http.HandleFunc("/delete/data", deleteData)
     http.HandleFunc("/edit/data", editData)
     fmt.Println("Server is listening...")
-    if err := http.ListenAndServe(":8009", nil); err != nil {
+    if err := http.ListenAndServe(":8014", nil); err != nil {
         fmt.Println("main.go -> main() -> ListenAndServe(): ", err)
     }
 }
