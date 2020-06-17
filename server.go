@@ -26,7 +26,6 @@ func init() {
         {ID: 1, Firstname: "Кантемир", Secondname: "Задорожный", Phone: "+380"},
         {ID: 2, Firstname: "Анна", Secondname: "Задорожная", Phone: "+380"},
         {ID: 3, Firstname: "Виктор", Secondname: "Кондратюк", Phone: "+380"},
-        {ID: 3, Firstname: "Алекс", Secondname: "Евтушок", Phone: "+380"},
     }
 }
 
