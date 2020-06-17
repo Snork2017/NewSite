@@ -10,8 +10,8 @@ import (
 )
 
 type Data struct {
-    ID         uint64 `json:"id"`
-    Firstname  string 
+    ID         uint64 `json:"id, string"`
+    Firstname  string `json:"name"`
     Secondname string
     Phone      string
 }
@@ -33,7 +33,6 @@ func IndexPage(w http.ResponseWriter, r *http.Request) {
     if r.Method != http.MethodGet {
         return
     }
-
     tmpl := template.Must(template.ParseFiles("create.html"))
     if err := tmpl.Execute(w, nil); err != nil {
         fmt.Println("main.go -> IndexPage() -> Execute(): ", err)
@@ -75,7 +74,6 @@ func getData(w http.ResponseWriter, r *http.Request) {
         fmt.Println("server.go -> getData() -> json.Marshal(): ", err)
         return
     }
-
     w.Header().Set("Content-Type", "application/json")
     if _, err := w.Write(body); err != nil {
         fmt.Println("main.go -> getData() -> Write(): ", err)
@@ -107,7 +105,7 @@ func editData(w http.ResponseWriter, r *http.Request) {
     var request Data
     if r.Method != http.MethodPost {
         return
-}
+	}
     body, err := ioutil.ReadAll(r.Body)
     if err != nil {
         fmt.Println("server.go -> editData() -> json.ReadAll(): ", err)
@@ -130,16 +128,40 @@ func editData(w http.ResponseWriter, r *http.Request) {
     data = append(data)
 }
 
+func getNameData(w http.ResponseWriter, r *http.Request) {
+	var request Data
+	if r.Method != http.MethodGet {
+        return
+    }
+	b, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
+	fmt.Println(string(b))
+
+	err = json.Unmarshal(b, &request)
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
+	for k := range data {
+        if data[k].ID == request.ID{
+            data[k].Firstname = request.Firstname
+        }
+    } 
+    data = append(data)
+}
+
 func main() {
     http.HandleFunc("/login", IndexPage)
     http.HandleFunc("/save", saveUsers)
     http.HandleFunc("/get/data", getData)
     http.HandleFunc("/delete/data", deleteData)
     http.HandleFunc("/edit/data", editData)
+    http.HandleFunc("/name/data", getNameData)
     fmt.Println("Server is listening...")
-    if err := http.ListenAndServe(":8014", nil); err != nil {
+    if err := http.ListenAndServe(":8069", nil); err != nil {
         fmt.Println("main.go -> main() -> ListenAndServe(): ", err)
     }
 }
-
-// "<button class='popup-with-form' href='test-form1' id='edit' data-id='"+ value.ID +"' <td><img src='https://img.icons8.com/cute-clipart/16/000000/edit.png'> </button>"

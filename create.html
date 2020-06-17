@@ -54,9 +54,7 @@
         <table border="1px">
             <thead>
                 <tr>
-                    <td width ="86" bgcolor="lightcyan" align="center">Firstname</td>
                     <td width ="86" bgcolor="lightcyan" align="center">Secondname</td>
-                    <td width ="86" bgcolor="lightcyan" align="center">Phone</td>
                     <td width ="86" bgcolor="lightcyan" align="center">Actions</td>
                 </tr>
             </thead>
@@ -121,18 +119,18 @@
         $.get( "/get/data", function(data) {    
             $('#brd1').empty(); 
             jQuery.each(data, function( index, value ) {    
-                $('#brd1').append("<tr class='Name'> <td align = 'center'>  " + value.Firstname + "</td> <br> <td align = 'center'> " + value.Secondname + "</td><br><td align = 'center'>" + value.Phone+"</td><br><td align = 'center'><button class='delete' data-id='"+ value.id +"' <td><img src='https://img.icons8.com/color/16/000000/delete-sign.png'> </button>"+  "<button class='popup-with-form' href='#test-form1' data-id='"+ value.id +"' id='edit' data-firstName='"+value.Firstname+"' data-secondName='"+value.Secondname+"' data-Phone='"+value.Phone+"'>+Edit User</button>"+"</tr>");
+                $('#brd1').append("<tr class='Name'> <td align = 'center'> " + value.Secondname + "</td><br><td align = 'center'><button class='delete' data-id='"+ value.id +"' <td><img src='https://img.icons8.com/color/16/000000/delete-sign.png'> </button>"+  "<button class='popup-with-form' href='#test-form1' data-id='"+ value.id +"' id='edit'' data-secondName='"+value.Secondname+"' '>+Edit User</button>"+"</tr>");
             }); 
             $('.popup-with-form').magnificPopup({
             type: 'inline',
             preloader: false,
-            focus: '#firstname',
+            focus: '#firstnameEdit',
             callbacks: {
                 beforeOpen: function() {
                     if($(window).width() < 700) {
                         this.st.focus = false;
                     } else {
-                        this.st.focus = '#firstname';
+                        this.st.focus = '#firstnameEdit';
                     }
                 }
             }
@@ -153,10 +151,22 @@
 
     $('#brd1').on('click', '#edit', function(){
         var id = $(this).attr("data-id");
-        var firstName = $(this).attr("data-firstName");
+        var name = $('#firstname').val();
         var secondName = $(this).attr("data-secondName");
-        var phone = $(this).attr("data-phone");
-        $('#firstnameEdit').val(firstName);
+        var phone = $(this).attr("data-Phone");
+        var data = {
+                'id': id,
+                'firstName': $('#firstname').val(),
+            }
+            $.ajax({   
+                url: '/name/data',    
+                type: 'GET', 
+                data: JSON.stringify(data),
+                contentType: "application/javascript; charset=utf-8",  
+                dataType: "json", 
+            });
+            console.log(data)
+        $('#firstnameEdit').val(name);
         $('#secondnameEdit').val(secondName);
         $('#phoneEdit').val(phone);
         $('#editUser').val(id);
