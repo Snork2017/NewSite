@@ -18,16 +18,8 @@ type Data struct {
 
 var (
     data  []Data
-    count uint64
+    count  uint64
 )
-
-func init() {
-    data = []Data{
-        {ID: 1, Firstname: "Кантемир", Secondname: "Задорожный", Phone: "+380"},
-        {ID: 2, Firstname: "Анна", Secondname: "Задорожная", Phone: "+380"},
-        {ID: 3, Firstname: "Виктор", Secondname: "Кондратюк", Phone: "+380"},
-    }
-}
 
 func IndexPage(w http.ResponseWriter, r *http.Request) {
     if r.Method != http.MethodGet {
@@ -157,7 +149,7 @@ func main() {
     http.HandleFunc("/delete/data", deleteData)
     http.HandleFunc("/edit/data", editData)
     fmt.Println("Server is listening...")
-    if err := http.ListenAndServe(":8148", nil); err != nil {
+    if err := http.ListenAndServe(":8155", nil); err != nil {
         fmt.Println("main.go -> main() -> ListenAndServe(): ", err)
     }
 }
